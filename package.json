@@ -4,7 +4,8 @@
   "description": "Backend para el trabajo de ingeWeb.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "author": "SLQ, SGP, JHS, KR, DD",
   "license": "MIT",
