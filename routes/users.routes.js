@@ -4,8 +4,8 @@ const usersController = require ("../controllers/users.controller")
 const isAuthenticated = require("../middlewares/isAuthenticated")
 
 
-router.post('/',  usersController.registerUser)
-router.post("/getUser",usersController.getUser)
+router.get('/',isAuthenticated, usersController.getUser)
+router.post('/', isAuthenticated, usersController.registerUser)
 
 
 
