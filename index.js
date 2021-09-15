@@ -1,5 +1,6 @@
 require("dotenv").config();
 require("./config/DB.config");
+require("./models/Pet")
 
 const express = require("express");
 const cors = require("cors");
