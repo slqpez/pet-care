@@ -1,4 +1,5 @@
 const Owner = require("../models/Owner");
+const Pet = require("../models/Pet");
 const jwt = require("jsonwebtoken");
 
 const ownerController = {
@@ -16,7 +17,7 @@ const ownerController = {
     };
 
     try {
-      const owner =  new Owner(newOwner);
+      const owner = new Owner(newOwner);
 
       await owner.save();
 
@@ -52,8 +53,17 @@ const ownerController = {
     const newOwner = req.body;
 
     try {
-      await Owner.findByIdAndUpdate(ownerId, newOwner);
-      return res.json({ message: "El usuario fue actualizado correctamente." });
+      const owner = await Owner.findByIdAndUpdate(ownerId, newOwner);
+
+      if (owner === null) {
+        return res
+          .status(400)
+          .json({ message: "El propietario no está en la base de datos." });
+      } else {
+        return res.json({
+          message: "El usuario fue actualizado correctamente.",
+        });
+      }
     } catch (err) {
       return res.status(400).json({ message: error.message });
     }
@@ -63,6 +73,27 @@ const ownerController = {
     const { ownerId } = req.params;
 
     try {
+      const owner = await Owner.findById(ownerId);
+      if(owner === null)       return res.status(400).json({ message: "El propietario no está en la base de datos." });
+
+      const pets = owner.pets;
+
+      const petsArray = pets.map((pet) => pet.toString());
+
+      for (pet of petsArray) {
+        const petFounded = await Pet.findById(pet);
+        const newOwners = petFounded.owners.filter((owner) => owner != ownerId);
+        console.log(newOwners)
+
+        if (newOwners.length === 0)
+          return res.json({
+            message: "La mascota no puede quedarse sin dueños.",
+          });
+
+        petFounded.owners = newOwners;
+        await petFounded.save();
+      }
+
       await Owner.findByIdAndDelete(ownerId);
       res.json({ message: "El usuario fue eliminado correctamente." });
     } catch (error) {
