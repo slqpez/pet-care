@@ -22,17 +22,16 @@ const PetSchema = new mongoose.Schema(
       required: [true, "Por favor ingrese el tamaño."],
       trim: true,
     },
-    vaccination: {
-      type: String,
-      required: [true, "Por favor ingrese el plan de vacunación."],
-      trim: true,
-    },
+    vaccination: [
+      {
+        type: String,
+      },
+    ],
     cares: {
       type: String,
-      required: [true, "Por favor ingrese los cuidados a tener."],
       trim: true,
     },
-    owners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],
+    owners: [{ type: mongoose.Schema.Types.ObjectId, ref: "Owner" }]
   },
   {
     timestamp: true,

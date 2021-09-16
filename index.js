@@ -9,6 +9,7 @@ const path = require("path");
 const authRouter = require("./routes/auth.routes")
 const userRouter = require("./routes/user.routes")
 const ownerRouter = require("./routes/owner.routes")
+const petRouter = require("./routes/pet.routes")
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(cors());
 app.use("/api/auth", authRouter)
 app.use("/api/users", userRouter); 
 app.use("/api/owners", ownerRouter); 
+app.use("/api/pets", petRouter); 
 
 
 /* app.use(favicon(__dirname + '/build/favicon.ico')); */

@@ -1,7 +1,7 @@
 const Owner = require("../models/Owner");
 const jwt = require("jsonwebtoken");
 
-const userController = {
+const ownerController = {
   registerOwner: async (req, res) => {
     const { name, lastName, createdBy, document, phone, email, address } =
       req.body;
@@ -16,7 +16,7 @@ const userController = {
     };
 
     try {
-      const owner = new Owner(newOwner);
+      const owner =  new Owner(newOwner);
 
       await owner.save();
 
@@ -71,4 +71,4 @@ const userController = {
   },
 };
 
-module.exports = userController;
+module.exports = ownerController;
