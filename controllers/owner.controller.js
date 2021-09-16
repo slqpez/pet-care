@@ -74,7 +74,10 @@ const ownerController = {
 
     try {
       const owner = await Owner.findById(ownerId);
-      if(owner === null)       return res.status(400).json({ message: "El propietario no está en la base de datos." });
+      if (owner === null)
+        return res
+          .status(400)
+          .json({ message: "El propietario no está en la base de datos." });
 
       const pets = owner.pets;
 
@@ -83,7 +86,7 @@ const ownerController = {
       for (pet of petsArray) {
         const petFounded = await Pet.findById(pet);
         const newOwners = petFounded.owners.filter((owner) => owner != ownerId);
-        console.log(newOwners)
+        console.log(newOwners);
 
         if (newOwners.length === 0)
           return res.json({

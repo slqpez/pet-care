@@ -1,4 +1,4 @@
-const Users = require("../models/User");
+const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -11,11 +11,11 @@ const userController = {
           .status(400)
           .json({ msg: "Por favor llena todos los campos." });
 
-      const userwithEmail = await Users.findOne({ email });
+      const userwithEmail = await User.findOne({ email });
       if (userwithEmail)
         return res.status(400).json({ msg: "El correo ingresado ya existe." });
 
-      const userWithName = await Users.findOne({ username });
+      const userWithName = await User.findOne({ username });
       if (userWithName)
         return res.status(400).json({ msg: "El usuario ingresado ya existe." });
 
@@ -32,7 +32,7 @@ const userController = {
         password: passwordHash,
       };
 
-      await Users(newUser).save();
+      await User(newUser).save();
 
       res.json({ msg: "!Usuario registrado!", created: true });
     } catch (err) {
@@ -45,14 +45,44 @@ const userController = {
 
     try {
       if (userId) {
-        const currentUser = await Users.findById(userId).select(
-          "-password"
-        );
+        const currentUser = await User.findById(userId).select("-password");
         return res.json({ user: currentUser });
       }
     } catch (err) {
       return res.status(400).json({ msg: err.message });
     }
+  },
+
+  editUser: async (req, res) => {
+    const { userId } = req.params;
+    const newUser = req.body;
+
+    try {
+      const userFounded = await User.findByIdAndUpdate(userId, newUser); //TODO Falta editar la fotico.
+
+      if (userFounded === null)
+        return res
+          .status(400)
+          .json({ msg: "El usuario no está en la base de datos." });
+
+      res.json({ msg: "Usuario actualizado correctamente" });
+    } catch (error) {
+      return res.status(400).json({ msg: err.message });
+    }
+  },
+
+  deleteUser: async (req, res) => {
+    const { userId } = req.params;
+    const userFounded = await User.findByIdAndDelete(userId);
+    if (userFounded === null)
+      return res
+        .status(400)
+        .json({ msg: "El usuario no está en la base de datos." });
+
+    res.json({ msg: "Usuario eliminado correctamente" });
+
+    try {
+    } catch (error) {}
   },
 };
 
