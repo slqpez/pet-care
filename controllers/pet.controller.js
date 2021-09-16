@@ -72,10 +72,26 @@ const petController = {
 
   deletePet: async (req, res) => {
     const { petId } = req.params;
+  
 
     try {
+      const pet = await  Pet.findById(petId);
+      const owners = pet.owners;
+
+      const ownersArray = owners.map(owner=> owner.toString())
+
+
+      for(owner of ownersArray) {
+        const ownerFounded = await Owner.findById(owner)
+        const newPets = ownerFounded.pets.filter(pet=> pet!=petId)
+        
+        ownerFounded.pets = newPets
+        await ownerFounded.save()
+      }
+      
+      
       await Pet.findByIdAndDelete(petId);
-      res.json({ message: "La mascota fue eliminado correctamente." });
+      res.json({ message: "La mascota fue eliminado correctamente."});
     } catch (error) {
       return res.status(400).json({ message: error.message });
     }
