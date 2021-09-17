@@ -52,6 +52,18 @@ const userController = {
       return res.status(400).json({ msg: err.message });
     }
   },
+  getUsers: async (req, res) => {
+    try{
+      const users = await User.find({})
+      return res.json(users)
+
+    }catch(err){
+      return res.status(400).json({ msg: err.message });
+    }
+
+    
+
+  },
 
   editUser: async (req, res) => {
     const { userId } = req.params;
