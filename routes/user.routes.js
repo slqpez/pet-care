@@ -10,4 +10,9 @@ router.post('/', isAuthenticated, userController.registerUser)
 
 
 
+
+router.delete("/:userId", isAuthenticated, userController.deleteUser)
+
+
+
 module.exports = router

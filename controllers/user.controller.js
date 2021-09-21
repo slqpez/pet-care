@@ -53,16 +53,12 @@ const userController = {
     }
   },
   getUsers: async (req, res) => {
-    try{
-      const users = await User.find({})
-      return res.json(users)
-
-    }catch(err){
+    try {
+      const users = await User.find({});
+      return res.json(users);
+    } catch (err) {
       return res.status(400).json({ msg: err.message });
     }
-
-    
-
   },
 
   editUser: async (req, res) => {
@@ -85,16 +81,19 @@ const userController = {
 
   deleteUser: async (req, res) => {
     const { userId } = req.params;
-    const userFounded = await User.findByIdAndDelete(userId);
-    if (userFounded === null)
-      return res
-        .status(400)
-        .json({ msg: "El usuario no está en la base de datos." });
-
-    res.json({ msg: "Usuario eliminado correctamente" });
-
     try {
-    } catch (error) {}
+      const userFounded = await User.findByIdAndDelete(userId);
+      if (userFounded === null) {
+        return res
+          .status(400)
+          .json({ msg: "El usuario no está en la base de datos." });
+      } else {
+        res.json({ msg: "Usuario eliminado correctamente" });
+
+      }
+    } catch (error) {
+      return res.status(400).json({ msg: err.message });
+    }
   },
 };
 
