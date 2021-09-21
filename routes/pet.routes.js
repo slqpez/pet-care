@@ -5,10 +5,10 @@ const isAuthenticated = require("../middlewares/isAuthenticated")
 
 
 router.get('/', petController.getPets)
-router.get('/:petId', petController.getPetById)
+router.get('/pet/:petId', petController.getPetById)
 router.post('/', petController.registerPet)
-router.put('/:petId', petController.updatePet)
-router.delete('/:petId', petController.deletePet) 
+router.put('/pet/:petId', petController.updatePet)
+router.delete('/pet/:petId', petController.deletePet) 
 
 
 

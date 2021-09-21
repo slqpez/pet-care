@@ -58,7 +58,7 @@ const petController = {
     const newPet = req.body;
 
     try {
-      const pet = await Pet.findByIdAndUpdate(petId, newPet);
+      const pet = await Pet.findByIdAndUpdate(petId, newPet,{new: true});
       if (pet=== null) {
         return res
           .status(400)
@@ -66,6 +66,7 @@ const petController = {
       } else {
         return res.json({
           message: "La mascota fue actualizado correctamente.",
+          pet
         });
       }
     } catch (err) {

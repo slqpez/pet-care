@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const userController = {
   registerUser: async (req, res) => {
     try {
-      const { username, email, password } = req.body;
+      const { username, email, password, role} = req.body;
       if (!username || !email || !password)
         return res
           .status(400)
@@ -30,8 +30,8 @@ const userController = {
         username,
         email,
         password: passwordHash,
+        role
       };
-
       await User(newUser).save();
 
       res.json({ msg: "!Usuario registrado!", created: true });
