@@ -31,6 +31,23 @@ const PetSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    bathed:{
+      type:Boolean,
+      default:false
+    },
+    allergies:{
+      type:String,
+      trim:true
+    },
+    findings:{
+      type:String,
+      trim:true
+    },
+    approvedShower:{
+      type:Boolean,
+      default:false
+    },
+
     owners: [{ type: mongoose.Schema.Types.ObjectId, ref: "Owner" }]
   },
   {

@@ -1,9 +1,13 @@
 const bcrypt = require("bcrypt");
 const Users = require("../models/User");
+
+const Owners = require("../models/Owner");
+const nodemailer = require("nodemailer")
 //const jwt = require("jsonwebtoken")
 const {
   createAccessToken,
   createRefreshToken,
+  createClientToken
 } = require("../utils/handleTokens");
 
 const authController = {
@@ -35,6 +39,55 @@ const authController = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+  clientEmailAccess: async (req, res) => {
+
+  
+    const {clientEmail} = req.body
+
+    console.log(clientEmail)
+
+    const owner = await Owners.findOne({email:clientEmail });
+    console.log(owner)
+
+    const access_token = createAccessToken({id: owner._id});
+
+    if(owner){
+      try{
+        let transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          port: 465,
+          secure: true, 
+          auth: {
+            user: "santiago.lopez16@udea.edu.co",
+            pass: "zlrfnplvxljxzeuh"
+          },
+        });
+    
+        transporter.verify().then(() => {
+          console.log("Works")
+        })
+    
+         await transporter.sendMail({
+          from: '"Petcare 🐶" <santiago.lopez16@udea.edu.co>', 
+          to: clientEmail, 
+          subject: "Petcare 🐶", 
+          text: "Petcare email access", 
+          html: `<a href= http://localhost:3000/clientpage/${access_token}>Ingresa en este enlace </a>`,
+        });
+  
+        res.json({msg: "Correo enviado"})
+    
+      }catch(err){
+        res.json({error: err})
+      }
+    }else{
+      res.json({msg: "No hay propietarios con ese correo."})
+    }
+
+   
+    
+  }
 
  /*  refreshToken: (req, res)=>{
     const refreshToken = req.body.token

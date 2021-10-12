@@ -8,8 +8,13 @@ const createRefreshToken = (payload)=>{
   return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn:"7d"})
 }
 
+const createClientToken = (payload)=>{
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn:"8h"})
+}
+
 
 module.exports ={
   createAccessToken,
-  createRefreshToken
+  createRefreshToken,
+  createClientToken
 }

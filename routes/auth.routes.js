@@ -5,6 +5,7 @@ const isAuthenticated = require("../middlewares/isAuthenticated")
 
 
 router.post('/login',  authController.login)
+router.post("/sendtoken", authController.clientEmailAccess)
 //router.post('/refresh', authController.refreshToken )
 
 
